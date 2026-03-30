@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  market-watcher:
+    build: .
+    container_name: market-watcher
+    restart: unless-stopped
+
+    # Environment variables
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TZ=America/New_York
+      - LOG_LEVEL=INFO
+
+    # Persistent storage
+    volumes:
+      - ./data:/app/data              # Stock data cache
+      - ./logs:/app/logs              # Application logs
+      - ./alert_state.json:/app/alert_state.json    # Alert history
+      - ./alert_outcomes.json:/app/alert_outcomes.json  # Learning outcomes
+      - ./weight_history.json:/app/weight_history.json  # Weight adjustments
+
+    # Resource limits (NAS-friendly)
+    mem_limit: 512m
+    cpus: 1.0
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

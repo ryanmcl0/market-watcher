@@ -1,0 +1,21 @@
+# Core dependencies
+yfinance>=0.2.36
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Scheduling
+APScheduler>=3.10.0,<4.0.0
+
+# HTTP requests (for Telegram)
+requests>=2.31.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Timezone handling
+pytz>=2024.1
+tzdata>=2024.1
+
+# Web scraping for S&P 500 list
+lxml>=5.0.0
+html5lib>=1.1
